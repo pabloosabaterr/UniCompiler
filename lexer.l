@@ -1,10 +1,11 @@
 %{
-#include "lexico1.h"
-void error_lexico();
+#include "lexer.h"
+void errorLexico();
 void comienzoComentario();
 void finComentario();
 // el nivel nunca puede ser negativo, 0 para codigo, 1 || > 1 para comentarios anidados
 uint32_t nivelComentario=0;
+const char *delimitadores = "\n;,})]";
 %}
 digito              [0-9]
 %option yylineno
@@ -20,18 +21,17 @@ entero              {digito}+
 <COMENT>"*/"                        {finComentario();}
 <COMENT>.                           ;
 <COMENT>\n                          ;
-begin                               return TOK_BEGIN;
-end                                 return TOK_END;
-read                                return TOK_READ;
-main                                return TOK_MAIN;
-print                               return TOK_PRINT;
-({letra}|_|$)({letra}|{digito}|_)*  return TOK_ID;
-{entero}                            return TOK_INTLITERAL;
+"end"                               return TOK_END;
+"read"                              return TOK_READ;
+"main"                              return TOK_MAIN;
+"print"                             return TOK_PRINT;
 "if"                                return TOK_IF;
 "else"                              return TOK_ELSE;
 "while"                             return TOK_WHILE;
 "for"                               return TOK_FOR;
 "do"                                return TOK_DO;
+({letra}|_|$)({letra}|{digito}|_)*  return TOK_ID;
+{entero}                            return TOK_INTLITERAL;
 "("                                 return TOK_LPAREN;		
 ")"                                 return TOK_RPAREN;
 ";"                                 return TOK_SEMICOLON;
@@ -56,7 +56,7 @@ print                               return TOK_PRINT;
 ">"                                 return TOK_GT;
 "{"                                 return TOK_LBRACKET;
 "}"                                 return TOK_RBRACKET;
-.                                   error_lexico();
+.                                   errorLexico();
 %%
 
 /**
@@ -77,12 +77,13 @@ void finComentario(){
         BEGIN(INITIAL);
 }
 
-void error_lexico()
-{
-  printf("\nERROR, simbolo no reconocido %s en linea %d\n",yytext, yylineno);
+void errorLexico(){
+    printf("\nERROR LEXICO:, simbolo no reconocido %s en linea %d\n",yytext, yylineno);
+    int c;
+    while((c = input()) != EOF && strchr(delimitadores, c) == NULL); // Ignorar el resto de la línea
 }
 
-void main() {
+int main() {
     Token tok = 0;
     while (tok=yylex())
         printf("%d %s\n", tok, yytext);
