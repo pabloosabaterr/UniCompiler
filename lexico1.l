@@ -20,31 +20,37 @@ entero              {digito}+
 <COMENT>"*/"                        {finComentario();}
 <COMENT>.                           ;
 <COMENT>\n                          ;
-begin                               return BEGINN;
-end                                 return END;
-read                                return READ;
-write                               return WRITE;
-main                                return MAIN;
-print                               return PRINT;
-({letra}|_|$)({letra}|{digito}|_)*  return ID;
-{entero}                            return INTLITERAL;
-"("                                 return LPAREN;		
-")"                                 return RPAREN;
-";"                                 return SEMICOLON;
-","                                 return COMMA;
-":="                                return ASSIGNOP;
-"+"                                 return PLUSOP;
-"-"                                 return MINUSOP;
-"{"                                 return LBRACKET;
-"}"                                 return RBRACKET;
+begin                               return TOK_BEGINN;
+end                                 return TOK_END;
+read                                return TOK_READ;
+write                               return TOK_WRITE;
+main                                return TOK_MAIN;
+print                               return TOK_PRINT;
+({letra}|_|$)({letra}|{digito}|_)*  return TOK_ID;
+{entero}                            return TOK_INTLITERAL;
+"("                                 return TOK_LPAREN;		
+")"                                 return TOK_RPAREN;
+";"                                 return TOK_SEMICOLON;
+","                                 return TOK_COMMA;
+":="                                return TOK_ASSIGNOP;
+"+"                                 return TOK_PLUSOP;
+"-"                                 return TOK_MINUSOP;
+"{"                                 return TOK_LBRACKET;
+"}"                                 return TOK_RBRACKET;
 .                                   error_lexico();
 %%
 
+/**
+* @brief aunmenta el nivel de comentario y cambia al estado COMENT
+*/
 void comienzoComentario(){
     ++nivelComentario;
     BEGIN(COMENT);
 }
 
+/**
+* @brief decrementa el nivel de comentario, si llega a 0, vuelve al estado inicial
+*/
 void finComentario(){
     // Si el nivel de comentario es mayor a 0, se decrementa, si llega a 0, se vuelve al estado inicial.
     nivelComentario > 0 && --nivelComentario;
@@ -58,8 +64,8 @@ void error_lexico()
 }
 
 void main() {
-    int i;
-    while (i=yylex())
-        printf("%d %s\n",i,yytext);
+    Token tok = 0;
+    while (tok=yylex())
+        printf("%d %s\n", tok, yytext);
     printf("FIN DE ANALISIS LEXICO\n");
 }
