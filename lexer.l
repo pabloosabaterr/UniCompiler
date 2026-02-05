@@ -20,21 +20,40 @@ entero              {digito}+
 <COMENT>"*/"                        {finComentario();}
 <COMENT>.                           ;
 <COMENT>\n                          ;
-begin                               return TOK_BEGINN;
+begin                               return TOK_BEGIN;
 end                                 return TOK_END;
 read                                return TOK_READ;
-write                               return TOK_WRITE;
 main                                return TOK_MAIN;
 print                               return TOK_PRINT;
 ({letra}|_|$)({letra}|{digito}|_)*  return TOK_ID;
 {entero}                            return TOK_INTLITERAL;
+"if"                                return TOK_IF;
+"else"                              return TOK_ELSE;
+"while"                             return TOK_WHILE;
+"for"                               return TOK_FOR;
+"do"                                return TOK_DO;
 "("                                 return TOK_LPAREN;		
 ")"                                 return TOK_RPAREN;
 ";"                                 return TOK_SEMICOLON;
 ","                                 return TOK_COMMA;
-":="                                return TOK_ASSIGNOP;
+"=="                                return TOK_EQ;
+"+="                                return TOK_PLUSEQ;
+"-="                                return TOK_MINUSEQ;
+"*="                                return TOK_MULTEQ;
+"/="                                return TOK_DIVEQ;
+"%="                                return TOK_MODEQ;
+"<="                                return TOK_LTEQ;
+">="                                return TOK_GTEQ;
+"!="                                return TOK_NEQ;
+"!"                                 return TOK_NOT;
+"="                                 return TOK_ASSIGNOP;
 "+"                                 return TOK_PLUSOP;
 "-"                                 return TOK_MINUSOP;
+"*"                                 return TOK_MULTOP;
+"/"                                 return TOK_DIVOP;
+"%"                                 return TOK_MODOP;
+"<"                                 return TOK_LT;
+">"                                 return TOK_GT;
 "{"                                 return TOK_LBRACKET;
 "}"                                 return TOK_RBRACKET;
 .                                   error_lexico();
@@ -68,4 +87,5 @@ void main() {
     while (tok=yylex())
         printf("%d %s\n", tok, yytext);
     printf("FIN DE ANALISIS LEXICO\n");
+    return 0;
 }
