@@ -6,7 +6,7 @@ El lexer esta hecho con flex.
 
 ---
 
-para ejecutarlo:
+para ejecutarlo, en windows en wsl o en linux:
 ```bash
 make
 ```
