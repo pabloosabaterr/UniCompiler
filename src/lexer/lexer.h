@@ -1,6 +1,10 @@
 #ifndef LEXICO1_H
 #define LEXICO1_H
 
+/**
+ * @enum Token
+ * @brief enum con los tokens del lexer
+ */
 typedef enum {
     // Palabras reservadas
     TOK_VOID,

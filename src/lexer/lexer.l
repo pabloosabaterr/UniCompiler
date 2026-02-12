@@ -1,15 +1,21 @@
 %{
 #include "lexer/lexer.h"
+
+// funciones auxiliares
 void errorLexico();
 void comienzoComentario();
 void finComentario();
 void manejarString();
 void absorberString();
+
 // el nivel nunca puede ser negativo, 0 para codigo, 1 || > 1 para comentarios anidados
 uint32_t nivelComentario=0;
-// bool para saber si estamos dentro de un string o no, para manejar los errores de string sin cerrar
+
+// flag para saber si estamos dentro de un string o no, para manejar los errores de string sin cerrar
 uint8_t dentroDeString = 0;
+
 const char *delimitadores = "\n;,})]";
+
 %}
 digito              [0-9]
 %option yylineno
@@ -42,6 +48,7 @@ entero              {digito}+
 "while"                             return TOK_WHILE;
 "for"                               return TOK_FOR;
 "do"                                return TOK_DO;
+"break"                             return TOK_BREAK;
 ({letra}|_|$)({letra}|{digito}|_)*  return TOK_ID;
 {entero}                            return TOK_INTLITERAL;
 "("                                 return TOK_LPAREN;		
@@ -76,7 +83,7 @@ void absorberString(){
 }
 
 /**
-* @brief cambia el estado si esta dentro o fuera de un string
+* @brief cambia el flag dentroDeString
 */
 void manejarString(){
     dentroDeString = !dentroDeString;
@@ -89,6 +96,7 @@ void manejarString(){
 
 /**
 * @brief aunmenta el nivel de comentario y cambia al estado COMENT
+* los comentarios anidados funcionan por niveles, cada que se encuentra una apertura se sube un nivel y cada que se encuentre un * * cierre se baja un nivel, siendo el nivel 0 fuera de un comentario y >0 dentro de un comentario.
 */
 void comienzoComentario(){
     ++nivelComentario;
@@ -108,8 +116,9 @@ void finComentario(){
 void errorLexico(){
     printf("\nERROR: error en la linea %d.\n", yylineno);
     int c;
+    // panic mode, si encuentra un error, absorbe todo hasta encontrar un delimitador o el final del archivo
     while((c = input()) != EOF && strchr(delimitadores, c) == NULL); // Ignorar el resto de la línea
-    if(c != EOF) unput(c); // devuelve el delimitador por si hay multiples expresiones en la misma linea
+    if(c != EOF) unput(c); // devuelve el delimitador por si hay varias expresiones en la misma linea
 }
 
 int main() {
