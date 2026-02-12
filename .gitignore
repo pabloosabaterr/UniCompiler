@@ -1,3 +1,4 @@
 lexico
 entrada.txt
 lex.yy.c
+*.o

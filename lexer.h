@@ -18,6 +18,7 @@ typedef enum {
     TOK_ID,
     TOK_INT,
     TOK_INTLITERAL,
+    TOK_STRINGLITERAL,
     // Delimitadores
     TOK_LPAREN,
     TOK_RPAREN,
