@@ -3,10 +3,10 @@
 
 typedef enum {
     // Palabras reservadas
-    TOK_BEGIN = 1,
-    TOK_END,
+    TOK_VOID,
+    TOK_VAR,
+    TOK_CONST,
     TOK_READ,
-    TOK_MAIN,
     TOK_PRINT,
     TOK_IF,
     TOK_ELSE,

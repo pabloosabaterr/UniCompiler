@@ -21,9 +21,11 @@ entero              {digito}+
 <COMENT>"*/"                        {finComentario();}
 <COMENT>.                           ;
 <COMENT>\n                          ;
-"end"                               return TOK_END;
+"int"                               return TOK_INT;
+"void"                              return TOK_VOID;
+"var"                               return TOK_VAR;
+"const"                             return TOK_CONST;
 "read"                              return TOK_READ;
-"main"                              return TOK_MAIN;
 "print"                             return TOK_PRINT;
 "if"                                return TOK_IF;
 "else"                              return TOK_ELSE;
