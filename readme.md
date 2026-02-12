@@ -8,7 +8,5 @@ El lexer esta hecho con flex.
 
 para ejecutarlo:
 ```bash
-flex lexer.l
-gcc lex.yy.c lexer.h -lfl -o lexer.o
-./lexer.o < entrada.txt
+make
 ```

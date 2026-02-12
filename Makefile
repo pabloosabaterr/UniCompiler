@@ -1,5 +1,8 @@
 CC = gcc
-FLAGS = -Wall -Wextra -pedantic -Werror
+FLAGS = -Wall -Wextra -pedantic -Werror -I src
 
 all:
-	flex lexer.l && $(CC) $(FLAGS) lex.yy.c -lfl -o lexer.o && ./lexer.o < entrada.txt
+	mkdir -p build/ && \
+	flex -o build/lexer.c src/lexer/lexer.l && \
+	$(CC) $(FLAGS) build/lexer.c -lfl -o build/lexer && \
+	./build/lexer < entrada.txt
